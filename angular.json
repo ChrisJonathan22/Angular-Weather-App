@@ -23,7 +23,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -123,5 +123,10 @@
       }
     }
   },
-  "defaultProject": "Angular-Weather-App"
+  "defaultProject": "Angular-Weather-App",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }
