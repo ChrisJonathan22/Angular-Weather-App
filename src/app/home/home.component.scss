@@ -1,5 +1,6 @@
 $align-center: center;
 $main-color: #eb6864;
+$none: none;
 
 // #data-table {
 //     text-align: $align-center;
@@ -32,12 +33,16 @@ caption {
     color: $main-color;
 }
 
-#data-table,tr, td, th {
-    border: 1px black solid;
-    border-collapse: collapse;
-}
+// tr, td, th {
+//     border: 1px black solid;
+//     border-collapse: collapse;
+// }
 
 #data-table {
     margin: 0 auto;
 }
 
+#no-border, #no-border th  {
+    // border: 0;
+    color: $main-color;
+}
