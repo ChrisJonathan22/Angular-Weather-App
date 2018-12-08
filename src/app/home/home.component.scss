@@ -2,10 +2,6 @@ $align-center: center;
 $main-color: #eb6864;
 $none: none;
 
-// #data-table {
-//     text-align: $align-center;
-// }
-
 #title-container {
     padding-top: 30px;
     text-align: $align-center;
@@ -27,6 +23,9 @@ caption {
 
 #container {
     margin-top: 50px;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
 .table-header {
