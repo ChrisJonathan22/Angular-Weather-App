@@ -23,9 +23,12 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "./node_modules/datatables/media/css/jquery.dataTables.css"
             ],
-            "scripts": []
+            "scripts": [ "./node_modules/jquery/dist/jquery.js",
+                          "./node_modules/datatables/media/js/jquery.dataTables.js"
+            ]
           },
           "configurations": {
             "production": {
