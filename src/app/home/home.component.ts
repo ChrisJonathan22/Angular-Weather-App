@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as $ from 'jquery';
 import 'DataTables.net';
 import { Chart } from 'chart.js';
-import 'chartjs-plugin-annotation';
+import * as ChartAnnotation from 'chartjs-plugin-annotation';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +14,29 @@ export class HomeComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
+    let namedChartAnnotation = ChartAnnotation;
+    namedChartAnnotation["id"]="annotation";
+    Chart.pluginService.register( namedChartAnnotation);
+
+    // This is an empty variable where the median average global temperature will go into
+    let avgOne;
+
+    //  2 seconds after the page has loaded use the now populated listOfTemps array and calculate the average temperature
+
+    setTimeout(() => {
+      listOfTemps.sort((a, b) => a - b);
+      let lowMiddle = Math.floor((listOfTemps.length - 1) / 2);
+      let highMiddle = Math.ceil((listOfTemps.length - 1) / 2);
+      let median = (listOfTemps[lowMiddle] + listOfTemps[highMiddle]) / 2;
+      /*
+          Add the average temperature inside the avgOne variable which will then be used to create the median average global temperature
+          Based on the 25 cities and it will also be used as the label for the median average global temperature
+          Limit the decimal places to 2
+      */
+      avgOne = median.toFixed(2);
+    }, 2000);
+    
   /*
      Wait for the data to load first and then use DataTable()
     Prior to implementing setTimeout() sometimes the data would load just fine
@@ -52,6 +75,7 @@ export class HomeComponent implements OnInit {
     let listOfCities = ['London', 'New york', 'Tokyo', 'Melbourne', 'Paris', 'Zurich', 'Montreal', 'Seoul', 'Sydney', 'Munich', 'Berlin', 'Vienna', 'Hong Kong', 'Boston', 'Toronto', 'Singapore', 'Edinburgh', 'Vancouver', 'Kyoto', 'Taipei', 'Brisbane', 'Canberra', 'Auckland', 'Manchester', 'Buenos Aires'];
     // This is an empty array where the temperature for each city will be pushed into when available
     let listOfTemps = [];
+    
     /*
       iife function/ immediately run the function
       Wait until the data has been received before adding table elements.
@@ -78,6 +102,11 @@ export class HomeComponent implements OnInit {
         let trCountryText = document.createTextNode(`${data.sys.country}`);
         trCountry.appendChild(trCountryText);
 
+        // Create table data for the type of weather
+        let trWeather = document.createElement('td');
+        let trWeatherText = document.createTextNode(`${data.weather[0].main}`);
+        trWeather.appendChild(trWeatherText);
+
         // Create table data with the city's temperature
         let trTemp = document.createElement('td');
         let trTempText = document.createTextNode(`${data.main.temp}`);
@@ -86,6 +115,7 @@ export class HomeComponent implements OnInit {
         // Append all the table data into the row
         tr.appendChild(trName);
         tr.appendChild(trCountry);
+        tr.appendChild(trWeather);
         tr.appendChild(trTemp);
 
         // Append everything into the table body
@@ -125,6 +155,22 @@ export class HomeComponent implements OnInit {
                     autoSkip: false
                   }
               }]
+          },
+          annotation: {
+            annotations: [{
+              type: 'line',
+              id: 'hLine',
+              mode: 'horizontal',
+              scaleID: 'y-axis-0',
+              value: avgOne,  // data-value at which the line is drawn
+              borderWidth: 2.5,
+              borderColor: 'black',
+              label: {
+                content: avgOne,
+                enabled: true,
+                backgroundColor: "#eb6864"
+              }
+            }]
           }
       }
   });
