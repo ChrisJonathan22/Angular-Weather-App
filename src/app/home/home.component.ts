@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
           Limit the decimal places to 2
       */
       avgOne = median.toFixed(2);
-    }, 2000);
+    }, 2500);
     
   /*
      Wait for the data to load first and then use DataTable()
@@ -68,7 +68,7 @@ export class HomeComponent implements OnInit {
         ]
       }); 
       dataTable.style.display = '';
-    }, 2000);
+    }, 2500);
     
     // Table body
     let dataBody = document.getElementById('data-body');
@@ -133,7 +133,7 @@ export class HomeComponent implements OnInit {
 
    console.log("Sorted List", sortedListOfTemps);
    console.log("Unsorted List", listOfTemps);
-   console.log(avgOne);
+   console.log(Chart.plugins);
 
   setTimeout(() => {
     let myChart = new Chart(ctx, {
@@ -155,21 +155,23 @@ export class HomeComponent implements OnInit {
       options: {
           scales: {
               yAxes: [{
+                  display: true,
                   ticks: {
-                      beginAtZero:true
+                      beginAtZero:true,
                   }
               }],
               xAxes: [{
+                  display: true,
                   ticks: {
                     autoSkip: false
                   }
               }]
           },
-          
+          plugins: {
             annotation: {
-              // drawTime: 'afterDatasetsDraw',
-              // events: ['click'],
-              // dblClickSpeed: 350,
+              drawTime: 'afterDatasetsDraw',
+              events: ['click'],
+              dblClickSpeed: 350,
               annotations: [{
                 type: 'line',
                 id: 'hLine',
@@ -185,10 +187,9 @@ export class HomeComponent implements OnInit {
               }
             }]
           }
-        
+        }
       }
   });
-  }, 2000);
-   
+  }, 2500);
     }
   }
