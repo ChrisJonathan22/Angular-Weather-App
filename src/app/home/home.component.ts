@@ -17,18 +17,19 @@ export class HomeComponent implements OnInit {
 
     let namedChartAnnotation = ChartAnnotation;
     namedChartAnnotation["id"]="annotation";
-    Chart.pluginService.register( namedChartAnnotation);
+    Chart.pluginService.register( namedChartAnnotation );
 
     // This is an empty variable where the median average global temperature will go into
     let avgOne;
-
+    
     //  2 seconds after the page has loaded use the now populated listOfTemps array and calculate the average temperature
 
     setTimeout(() => {
-      listOfTemps.sort((a, b) => a - b);
-      let lowMiddle = Math.floor((listOfTemps.length - 1) / 2);
-      let highMiddle = Math.ceil((listOfTemps.length - 1) / 2);
-      let median = (listOfTemps[lowMiddle] + listOfTemps[highMiddle]) / 2;
+      sortedListOfTemps.sort((a, b) => a - b);
+      let lowMiddle = Math.floor((sortedListOfTemps.length - 1) / 2);
+      let highMiddle = Math.ceil((sortedListOfTemps.length - 1) / 2);
+      let median = (sortedListOfTemps[lowMiddle] + sortedListOfTemps[highMiddle]) / 2;
+      
       /*
           Add the average temperature inside the avgOne variable which will then be used to create the median average global temperature
           Based on the 25 cities and it will also be used as the label for the median average global temperature
@@ -75,6 +76,7 @@ export class HomeComponent implements OnInit {
     let listOfCities = ['London', 'New york', 'Tokyo', 'Melbourne', 'Paris', 'Zurich', 'Montreal', 'Seoul', 'Sydney', 'Munich', 'Berlin', 'Vienna', 'Hong Kong', 'Boston', 'Toronto', 'Singapore', 'Edinburgh', 'Vancouver', 'Kyoto', 'Taipei', 'Brisbane', 'Canberra', 'Auckland', 'Manchester', 'Buenos Aires'];
     // This is an empty array where the temperature for each city will be pushed into when available
     let listOfTemps = [];
+    let sortedListOfTemps = [];
     
     /*
       iife function/ immediately run the function
@@ -88,6 +90,9 @@ export class HomeComponent implements OnInit {
 
         // Push each temperature into the array which will be used in the graph
         listOfTemps.push(data.main.temp);
+
+        // Push each temperature into the array which will then be sorted
+        sortedListOfTemps.push(data.main.temp);
 
         // Create a table row for each city
         let tr = document.createElement('tr');
@@ -126,6 +131,10 @@ export class HomeComponent implements OnInit {
    let canvas = <HTMLCanvasElement> document.getElementById("myChart");
    let ctx = canvas.getContext("2d");
 
+   console.log("Sorted List", sortedListOfTemps);
+   console.log("Unsorted List", listOfTemps);
+   console.log(avgOne);
+
   setTimeout(() => {
     let myChart = new Chart(ctx, {
       type: 'line',
@@ -133,7 +142,7 @@ export class HomeComponent implements OnInit {
           labels: ['London', 'New york', 'Tokyo', 'Melbourne', 'Paris', 'Zurich', 'Montreal', 'Seoul', 'Sydney', 'Munich', 'Berlin', 'Vienna', 'Hong Kong', 'Boston', 'Toronto', 'Singapore', 'Edinburgh', 'Vancouver', 'Kyoto', 'Taipei', 'Brisbane', 'Canberra', 'Auckland', 'Manchester', 'Buenos Aires'],
           datasets: [{
               label: 'Temperature',
-              data: [...listOfTemps],// I'm destructuring this array inside the data array
+              data: listOfTemps,
               backgroundColor: [
                 "lightgrey"
               ],
@@ -156,22 +165,27 @@ export class HomeComponent implements OnInit {
                   }
               }]
           },
-          annotation: {
-            annotations: [{
-              type: 'line',
-              id: 'hLine',
-              mode: 'horizontal',
-              scaleID: 'y-axis-0',
-              value: avgOne,  // data-value at which the line is drawn
-              borderWidth: 2.5,
-              borderColor: 'black',
-              label: {
-                content: avgOne,
-                enabled: true,
-                backgroundColor: "#eb6864"
+          
+            annotation: {
+              // drawTime: 'afterDatasetsDraw',
+              // events: ['click'],
+              // dblClickSpeed: 350,
+              annotations: [{
+                type: 'line',
+                id: 'hLine',
+                mode: 'horizontal',
+                scaleID: 'y-axis-0',
+                value: avgOne,  // data-value at which the line is drawn
+                borderWidth: 2.5,
+                borderColor: 'black',
+                label: {
+                  content: avgOne,
+                  enabled: true,
+                  backgroundColor: "#eb6864"
               }
             }]
           }
+        
       }
   });
   }, 2000);
