@@ -153,6 +153,7 @@ export class HomeComponent implements OnInit {
           }]
       },
       options: {
+          responsive: true,
           scales: {
               yAxes: [{
                   display: true,
@@ -167,29 +168,40 @@ export class HomeComponent implements OnInit {
                   }
               }]
           },
+          tooltips: {
+            enabled: true,
+            backgroundColor: "#black",
+            titleFontColor: "#eb6864"
+          },
           plugins: {
             annotation: {
-              drawTime: 'afterDatasetsDraw',
-              events: ['click'],
-              dblClickSpeed: 350,
-              annotations: [{
-                type: 'line',
-                id: 'hLine',
-                mode: 'horizontal',
-                scaleID: 'y-axis-0',
-                value: avgOne,  // data-value at which the line is drawn
-                borderWidth: 2.5,
-                borderColor: 'black',
-                label: {
-                  content: avgOne,
-                  enabled: true,
-                  backgroundColor: "#eb6864"
-              }
+                annotations: [{
+                // drawTime: 'afterDatasetsDraw',
+                // events: ['click'],
+                // dblClickSpeed: 350,
+                  type: 'line',
+                  id: 'hLine',
+                  mode: 'horizontal',
+                  yScaleID: 'y-axis-0',
+                  xScaleID: 'x-axis-0',
+                  yMin: 0,
+                  yMax: 15,
+                  xMin: 0,
+                  xMax: 15,
+                  value: avgOne,  // data-value at which the line is drawn
+                  borderWidth: 2.5,
+                  borderColor: 'black',
+                  label: {
+                    content: avgOne,
+                    enabled: true,
+                    backgroundColor: "#eb6864"
+                }
             }]
-          }
         }
       }
+      }
   });
+  console.log(myChart);
   }, 2500);
     }
   }
