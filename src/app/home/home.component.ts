@@ -131,9 +131,7 @@ export class HomeComponent implements OnInit {
    let canvas = <HTMLCanvasElement> document.getElementById("myChart");
    let ctx = canvas.getContext("2d");
 
-   console.log("Sorted List", sortedListOfTemps);
-   console.log("Unsorted List", listOfTemps);
-   console.log(Chart.plugins);
+  //  console.log(Chart.plugins);
 
   setTimeout(() => {
     let myChart = new Chart(ctx, {
@@ -143,28 +141,27 @@ export class HomeComponent implements OnInit {
           datasets: [{
               label: 'Temperature',
               data: listOfTemps,
-              backgroundColor: [
-                "lightgrey"
-              ],
-              borderColor: [
+              backgroundColor:
+                "lightgrey",
+              borderColor: 
                   '#eb6864',
-              ],
-              borderWidth: 1
+              borderWidth: 1,
+              fill: true
           }]
       },
       options: {
           responsive: true,
           scales: {
-              yAxes: [{
-                  display: true,
-                  ticks: {
-                      beginAtZero:true,
-                  }
-              }],
-              xAxes: [{
-                  display: true,
-                  ticks: {
-                    autoSkip: false
+            xAxes: [{
+              display: true,
+              ticks: {
+                autoSkip: false
+              }
+          }],
+            yAxes: [{
+                display: true,
+                ticks: {
+                        beginAtZero:true,
                   }
               }]
           },
@@ -173,32 +170,25 @@ export class HomeComponent implements OnInit {
             backgroundColor: "#black",
             titleFontColor: "#eb6864"
           },
-          plugins: {
-            annotation: {
-                annotations: [{
-                // drawTime: 'afterDatasetsDraw',
-                // events: ['click'],
-                // dblClickSpeed: 350,
+              annotation: {
+                  annotations: [{
+                  borderColor: 'red',
+                  borderDash: [2, 2],
+                  borderWidth: 2,
+                  mode: 'horizontal',
                   type: 'line',
                   id: 'hLine',
-                  mode: 'horizontal',
-                  yScaleID: 'y-axis-0',
-                  xScaleID: 'x-axis-0',
-                  yMin: 0,
-                  yMax: 15,
-                  xMin: 0,
-                  xMax: 15,
-                  value: avgOne,  // data-value at which the line is drawn
-                  borderWidth: 2.5,
-                  borderColor: 'black',
+                  value: avgOne,
+                  scaleID: 'y-axis-0',
                   label: {
-                    content: avgOne,
+                    backgroundColor: '#eb6864',
+                    fontColor: 'white',
+                    position: 'center',
                     enabled: true,
-                    backgroundColor: "#eb6864"
-                }
+                    content: avgOne
+                  }
             }]
         }
-      }
       }
   });
   console.log(myChart);
