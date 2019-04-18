@@ -22,43 +22,33 @@ export class HomeComponent implements OnInit {
     // This is an empty variable where the median average global temperature will go into
     let avgOne;
     
-    //  2 seconds after the page has loaded use the now populated listOfTemps array and calculate the average temperature
-
-    setTimeout(() => {
+    // This function generates the median average global temperature
+    function getMedian() {
       sortedListOfTemps.sort((a, b) => a - b);
       let lowMiddle = Math.floor((sortedListOfTemps.length - 1) / 2);
       let highMiddle = Math.ceil((sortedListOfTemps.length - 1) / 2);
       let median = (sortedListOfTemps[lowMiddle] + sortedListOfTemps[highMiddle]) / 2;
-      
       /*
           Add the average temperature inside the avgOne variable which will then be used to create the median average global temperature
           Based on the 25 cities and it will also be used as the label for the median average global temperature
           Limit the decimal places to 2
       */
       avgOne = median.toFixed(2);
-    }, 2500);
-    
-  /*
-     Wait for the data to load first and then use DataTable()
-    Prior to implementing setTimeout() sometimes the data would load just fine
-    but other times it would load but just above it there would be a message
-    displayed within the database and above the data telling me that there wasn't any available data
-    the table was populated after DataTable ran which is where the issue came from
-    I have now delayed DataTable by a few seconds to let data load first
-  */  
+    }
   
-  /*
-    Initially hide the table, the loading image will be shown by default. 
-    After 2 seconds, hide the loading image
-    Initialise the table with DataTable()
-    Show the table when ready
-  */
+    /*
+      Initially hide the table, the loading image will be shown by default. 
+      After 2 seconds, hide the loading image
+      Initialise the table with DataTable()
+      Show the table when ready
+    */
     
     let dataTable = document.getElementById('data-table');
     dataTable.style.display = 'none';
     let loading = document.getElementById('loading-img');
 
-    setTimeout(() => { 
+    // This function initialises the table
+    function initTable() {
       loading.style.display = 'none';
       $('#data-table').DataTable({
         "lengthMenu": [ [5, 10, 20, -1], [5, 10, 20, "All"] ],
@@ -68,7 +58,7 @@ export class HomeComponent implements OnInit {
         ]
       }); 
       dataTable.style.display = '';
-    }, 2500);
+    }
     
     // Table body
     let dataBody = document.getElementById('data-body');
@@ -126,14 +116,18 @@ export class HomeComponent implements OnInit {
         // Append everything into the table body
         dataBody.appendChild(tr);
       }
+      // Generate median global temperature
+      getMedian();
+      // Initialise table
+      initTable();
+      // Generate chart
+      generateChart();
     })();
 
-   let canvas = <HTMLCanvasElement> document.getElementById("myChart");
-   let ctx = canvas.getContext("2d");
+  let canvas = <HTMLCanvasElement> document.getElementById("myChart");
+  let ctx = canvas.getContext("2d");
 
-  //  console.log(Chart.plugins);
-
-  setTimeout(() => {
+  function generateChart() {
     let myChart = new Chart(ctx, {
       type: 'line',
       data: {
@@ -157,41 +151,41 @@ export class HomeComponent implements OnInit {
               ticks: {
                 autoSkip: false
               }
-          }],
+            }],
             yAxes: [{
                 display: true,
                 ticks: {
-                        beginAtZero:true,
-                  }
-              }]
+                  beginAtZero:true,
+                }
+            }]
           },
           tooltips: {
             enabled: true,
             backgroundColor: "#black",
             titleFontColor: "#eb6864"
           },
-              annotation: {
-                  annotations: [{
-                  borderColor: 'red',
-                  borderDash: [2, 2],
-                  borderWidth: 2,
-                  mode: 'horizontal',
-                  type: 'line',
-                  id: 'hLine',
-                  value: avgOne,
-                  scaleID: 'y-axis-0',
-                  label: {
-                    backgroundColor: '#eb6864',
-                    fontColor: 'white',
-                    position: 'center',
-                    enabled: true,
-                    content: avgOne
-                  }
+          annotation: {
+            annotations: [{
+            borderColor: 'red',
+            borderDash: [2, 2],
+            borderWidth: 2,
+            mode: 'horizontal',
+            type: 'line',
+            id: 'hLine',
+            value: avgOne,
+            scaleID: 'y-axis-0',
+            label: {
+              backgroundColor: '#eb6864',
+              fontColor: 'white',
+              position: 'center',
+              enabled: true,
+              content: avgOne
+            }
             }]
-        }
+          }
       }
-  });
-  console.log(myChart);
-  }, 2500);
-    }
+    });
   }
+  }
+}
+  
